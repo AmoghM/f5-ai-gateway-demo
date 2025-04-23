@@ -34,7 +34,7 @@ services:
 
   aigw:
     container_name: aigw
-    image: private-registry.f5.com/aigw/aigw:v1.0.0
+    image: private-registry.f5.com/aigw/aigw:v1.0.2
     env_file: "aigw-jwt.env"
     command:
       - start
@@ -55,7 +55,7 @@ services:
 
   aigw-processors-f5:
     container_name: aigw-processors-f5
-    image: private-registry.f5.com/aigw/aigw-processors-f5:v1.0.0
+    image: private-registry.f5.com/aigw/aigw-processors-f5:v1.0.1
     environment:
       TLS_ENABLED: false
       ENABLE_GPU: true
