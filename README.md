@@ -192,11 +192,28 @@ MESSAGE assistant the Philips Sonicare 3100 Power Toothbrush cost $49.99
 MESSAGE assistant the Philips Sonicare 3100 Power Toothbrush is effective at cleaning teeth
 ```
 
+## Useful Commands
+Display all requests/responses to ollama LLM via tcpdump:
+```bash
+$ sudo tcpdump -nni any port 11434 and greater 90 -s0 -A
+```
+
 ## Changelog <a name="Changelog"></a>
+#### 1.1.0-0
+Modified `compose.yaml`:
+- Updated AI GW core container to v1.1.0 [v1.1.0 Changelog](https://aigateway.clouddocs.f5.com/changelog.html#ai-gateway-core-v1-0-2)
+- Updated AI GW processors container to v1.1.0 [v1.1.0 Changelog](https://aigateway.clouddocs.f5.com/changelog.html#ai-gateway-processors-v1-0-1)
+- Removed system-prompt processor from AI Gateway configuration.
+    - This allows the custom user-prompt processor to append enforcement messages to user prompts only, not system prompts.
+
+New Features:
+- Added `aigw-processors-demo` container to run a custom F5 AI Gateway processor user-prompt. [Documentation here](https://github.com/megamattzilla/f5-aigw-processor-user-prompt/tree/main)
+
 #### 1.0.2-1
 Modified `compose.yaml`:
-- Updated AI GW core container to v1.0.2 [v1.0.2 Changelog](https://aigateway.clouddocs.f5.com/changelog.html#ai-gateway-core-v1-0-2)
-- Updated AI GW processors container to v1.0.1 [v1.0.1 Changelog](https://aigateway.clouddocs.f5.com/changelog.html#ai-gateway-processors-v1-0-1)
+- Updated AI GW core container to v1.0.2 [v1.0.2 Changelog](https://aigateway.clouddocs.f5.com/changelog.html#ai-gateway-core-v1-1-0)
+- Updated AI GW processors container to v1.0.1 [v1.0.1 Changelog](https://aigateway.clouddocs.f5.com/changelog.html#ai-gateway-processors-v1-1-0)
+
 
 #### 1.0.0-1
 New Features:
