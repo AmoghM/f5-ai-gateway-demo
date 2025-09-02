@@ -1,0 +1,5 @@
+git+https://github.com/nginxinc/f5-ai-gateway-sdk-py
+orca_sdk
+uvicorn
+starlette
+python-dotenv
