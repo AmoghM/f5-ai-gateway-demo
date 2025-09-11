@@ -8,6 +8,8 @@ to provide content safety analysis for incoming prompts.
 import os
 import logging
 from typing import Optional
+from orca_sdk import ClassificationModel, OrcaCredentials
+ORCA_AVAILABLE = True
 
 from f5_ai_gateway_sdk.parameters import Parameters
 from f5_ai_gateway_sdk.processor import Processor

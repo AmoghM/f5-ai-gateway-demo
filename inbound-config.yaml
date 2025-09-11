@@ -34,6 +34,7 @@ profiles:
     inputStages:
       - name: simple
         steps:
+          - name: orca-safety
           - name: prompt-injection
           - name: repetition-detect
           - name: language-id
@@ -96,6 +97,19 @@ processors:
       threshold: 0.95
       reject: true
       skip_system_messages: true
+  
+  - name: orca-safety
+    type: external
+    config:
+      endpoint: http://orca-safety-processor:8001
+      namespace: orca
+      version: 1
+    params:
+      annotate: true          # Add safety tags to requests
+      reject: true            # Block unsafe content
+      modify: true            # Add safety instructions
+      safety_threshold: 0.7   # Confidence threshold (0.0-1.0)
+      add_safety_instructions: true  # Add safety prompts
 
 ## List of Demo Custom SDK Processors
 ## More info for this processor can be found at: https://github.com/megamattzilla/f5-aigw-processor-user-prompt

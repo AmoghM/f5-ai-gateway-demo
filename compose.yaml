@@ -10,7 +10,7 @@ services:
       ENABLE_OLLAMA_API: false
       OPENAI_API_KEY: 42
     ports:
-      - 9090:8080
+      - 9092:8080
     volumes:
       - ./service/open-webui/protected_webui.db:/app/backend/data/webui.db
     networks:
@@ -26,7 +26,7 @@ services:
       ENABLE_OLLAMA_API: false
       OPENAI_API_KEY: 42
     ports:
-      - 9091:8080
+      - 9093:8080
     volumes:
       - ./service/open-webui/unprotected_webui.db:/app/backend/data/webui.db
     networks:
@@ -42,8 +42,8 @@ services:
       - --exporter-enable
       - --exporter-type=stdout
     ports:
-      - 80:4141
-      - 8080:8080
+      - 8081:4141
+      - 8082:8080
     volumes:
       - ./inbound-config.yaml:/etc/aigw.yaml
       - ./aigw.openai.secret:/etc/openai
@@ -58,12 +58,12 @@ services:
     image: private-registry.f5.com/aigw/aigw-processors-f5:v1.1.0
     environment:
       TLS_ENABLED: false
-      ENABLE_GPU: true
+      ENABLE_GPU: false
     restart: on-failure
     volumes:
       - ./service/aigw-processors-f5/healthcheck.py:/var/tmp/healthcheck.py
     ports:
-      - 8000:8000
+      - 8002:8000
     networks:
       - aigw
     healthcheck:
@@ -72,20 +72,29 @@ services:
       timeout: 5s
       retries: 12
       start_period: 5s
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
 
   aigw-processors-demo:
     container_name: aigw-processors-demo
     image: megamattzilla/ai-gateway-sdk-demo:user-prompt-v1.0
     restart: on-failure
     ports:
-      - 8042:8000
+      - 8043:8000
+    networks:
+      - aigw
+  
+  orca-safety-processor:
+    container_name: orca-safety-processor
+    build: ./orca_processor
+    env_file: ./orca_processor/.env
+    ports:
+      - 8001:8001
     networks:
       - aigw
 
@@ -112,7 +121,7 @@ services:
   ollama:
     image: ollama/ollama:latest
     ports:
-      - 11434:11434
+      - 11435:11434
     volumes:
       - ./service/ollama:/model_files  # Mount the directory with the ModelFile
     entrypoint: ["/bin/sh", "/model_files/run_ollama.sh"] # Loading the custom Modelfile
@@ -125,13 +134,13 @@ services:
       - OLLAMA_HOST=0.0.0.0
     networks:
       - aigw
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
 
 networks:
   aigw:
